@@ -47,7 +47,7 @@ extern "C" PyObject *peaks_shuffle(PyObject *self, PyObject *args)
   int r = 1000; //number of times to rerun
   int T = 0 ; //0 or 1 show timing info
   float alpha = .05; //FDR
-  PyObject *reads; //list of reads
+  PyObject *reads; //list of readlengths
   
   
   //TODO figure out how to set default values and document this
@@ -69,7 +69,7 @@ extern "C" PyObject *peaks_shuffle(PyObject *self, PyObject *args)
         PyErr_SetString(PyExc_ValueError, "List must not be null");
 	return NULL;
   }
-  std::vector<long> OBS_CUTOFF(((L / num_reads) + 1) * 100, 0L);
+  std::vector<long> OBS_CUTOFF(((L / num_reads) + 1) * 100, 0L); # strange intial length, but it'll be dynamically adjusted below.
   int redone = 0;
  
   std::vector<int> GENE(L, 0L); //will store the height at every position of the gene
@@ -137,7 +137,7 @@ extern "C" PyObject *peaks_shuffle(PyObject *self, PyObject *args)
     }
 
     //here is where you compute what height is significant.
-    double PVAL[max_height];
+    double PVAL[max_height]; //
     std::vector<int> sig_heights;
     PVAL[0] = 1; // set pvalue for height 0 = to 1;
 
